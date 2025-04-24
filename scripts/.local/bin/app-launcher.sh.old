@@ -1,0 +1,14 @@
+#!/bin/bash
+
+apps=$(find /usr/share/applications -name "*.desktop" -exec basename {} \; | sed 's/\.desktop$//' | sort -u)
+
+commands=$(compgen -c | sort -u)
+
+selection=$(printf "%s\n%s" "$apps" "$commands" | fzf --layout=reverse --prompt="launch: ")
+
+if [ -n "$selection" ]; then
+    swaymsg -t command exec "gtk-launch $selection" || \
+    swaymsg -t command exec "$selection"
+fi
+
+echo $selection
