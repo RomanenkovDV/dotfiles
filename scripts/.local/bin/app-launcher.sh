@@ -1,30 +1,44 @@
 #!/usr/bin/env bash
 
-# Путь к кэшу
+CACHE_DLM=$'\t'
 CACHE_FILE="$HOME/.cache/fzf_app_launcher.cache"
 
-# Функция обновления кэша в фоне
 update_cache() {
-    # Ищем .desktop-файлы, извлекаем названия и пути
     find /usr/share/applications/ ~/.local/share/applications/ -type f -name "*.desktop" 2>/dev/null | \
     while read -r file; do
-        grep -m1 "^Name=" "$file" | cut -d= -f2 | tr -d '\n'
-        echo "|$file"
+      name=$(grep -m1 "^Name=" "$file" | cut -d= -f2)
+      categories=$(grep -m1 "^Categories=" "$file" | cut -d= -f2 || echo "Uncategorized")
+      echo "$name - (${categories%;})$CACHE_DLM$file"
     done > "$CACHE_FILE.tmp"
     mv "$CACHE_FILE.tmp" "$CACHE_FILE"
 }
 
-# Если кэша нет — создаём сразу
 if [[ ! -f "$CACHE_FILE" ]]; then
     update_cache
 else
-    # Иначе обновляем в фоне (чтобы не блокировать запуск)
     (update_cache &) &>/dev/null
 fi
 
-# Запускаем fzf на актуальных данных (из кэша)
-SELECTION=$(cat "$CACHE_FILE" | fzf --layout=reverse --prompt="launch: ")
+FZF_RESULT=$(cat "$CACHE_FILE" | fzf \
+  --exact \
+  --print-query \
+  --layout=reverse \
+  --prompt="launch: " \
+  --delimiter="$CACHE_DLM" \
+  --with-nth=1 \
+  --preview='grep -E "^Name=|^Comment=|^Exec=|^Path=|^Categories=" {2}' \
+  --preview-window=right:50%:wrap \
+  --bind "ctrl-j:print-query" \
+)
+
+echo $FZF_RESULT
+
+QUERY=$(echo "$FZF_RESULT" | head -n 1)
+SELECTION=$(echo "$FZF_RESULT" | tail -n +2)
+
 if [[ -n "$SELECTION" ]]; then
-    APP_PATH=$(echo "$SELECTION" | cut -d'|' -f2)
+    APP_PATH=$(echo "$SELECTION" | cut -d=$CACHE_DLM -f2)
     swaymsg -t command exec "gtk-launch $(basename "$APP_PATH")"
+else
+    swaymsg -t command exec "$QUERY"
 fi
