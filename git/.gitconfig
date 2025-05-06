@@ -1,0 +1,9 @@
+[user]
+    name = rdv
+    email = romanenkovdv@gmail.com
+
+[alias]
+	hist = log --graph --all --oneline
+
+[includeIf "gitdir:~/wk/sitronics-kt/"]
+    path = ~/wk/sitronics-kt/.gitconfig

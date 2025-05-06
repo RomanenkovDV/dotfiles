@@ -1,0 +1,209 @@
+### Constants
+set $mod Mod4
+
+set $left h
+set $down j
+set $up k
+set $right l
+
+set $term kitty
+set $menu wmenu-run
+
+###
+smart_gaps on
+gaps inner 2
+default_border pixel 2
+client.focused          #D08770 #ede6e3 #ffffff #EBCB8B #D08770
+client.unfocused        #637A8A #ede6e3 #685c56 #637A8A #637A8A
+client.focused_inactive #AA8F7C #ede6e3 #685c56 #AA8F7C #AA8F7C
+client.urgent           #BF616A #ede6e3 #ffffff #BF616A #BF616A
+client.placeholder      #dad3d0 #ede6e3 #938680 #dad3d0 #dad3d0
+
+### Output configuration (swaymsg -t get_outputs)
+output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output eDP-1 scale 1.5
+
+
+### Input configuration (swaymsg -t get_inputs)
+input * {
+    xkb_layout "us,ru"
+    xkb_options "grp:alt_shift_toggle"
+}
+
+
+### Idle configuration
+# exec swayidle -w \
+#     timeout 300 'swaylock -f -c 000000' \
+#     timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+#     before-sleep 'swaylock -f -c 000000'
+
+exec swayidle -w \
+    timeout 300 'swaylock -f' \
+    timeout 310 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+    before-sleep 'swaylock -f'
+
+
+### Key bindings
+
+    # Applications
+    bindsym --to-code $mod+Shift+q kill
+    bindsym --to-code $mod+Return exec $term
+    bindsym --to-code $mod+d exec kitty --class=kitty-launcher \
+        -o confirm_os_window_close=0 \
+        -o initial_window_width=1000 \
+        -o initial_window_height=600 \
+        -o remember_window_size=no \
+        -o hide_decorations=yes \
+        -e ~/.local/bin/app-launcher.sh
+
+    for_window [app_id="^kitty-launcher$"] floating enable, sticky enable, move position center
+    for_window [app_id="thunar"] floating enable, sticky enable, move position center
+    for_window [app_id="pavucontrol"] floating enable, sticky enable, move position center
+    for_window [app_id="nwg-dock"] floating enable, move position center bottom, sticky enable
+
+    exec mako
+
+# @todo format
+floating_modifier $mod normal
+
+bindsym --to-code $mod+Shift+c reload
+bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+
+bindsym --to-code $mod+$left focus left
+bindsym --to-code $mod+$down focus down
+bindsym --to-code $mod+$up focus up
+bindsym --to-code $mod+$right focus right
+bindsym --to-code $mod+Shift+$left move left
+bindsym --to-code $mod+Shift+$down move down
+bindsym --to-code $mod+Shift+$up move up
+bindsym --to-code $mod+Shift+$right move right
+
+bindsym --to-code $mod+Left focus left
+bindsym --to-code $mod+Down focus down
+bindsym --to-code $mod+Up focus up
+bindsym --to-code $mod+Right focus right
+bindsym --to-code $mod+Shift+Left move left
+bindsym --to-code $mod+Shift+Down move down
+bindsym --to-code $mod+Shift+Up move up
+bindsym --to-code $mod+Shift+Right move right
+
+bindsym --to-code $mod+1 workspace number 1
+bindsym --to-code $mod+2 workspace number 2
+bindsym --to-code $mod+3 workspace number 3
+bindsym --to-code $mod+4 workspace number 4
+bindsym --to-code $mod+5 workspace number 5
+bindsym --to-code $mod+6 workspace number 6
+bindsym --to-code $mod+7 workspace number 7
+bindsym --to-code $mod+8 workspace number 8
+bindsym --to-code $mod+9 workspace number 9
+bindsym --to-code $mod+0 workspace number 10
+
+bindsym --to-code $mod+Shift+1 move container to workspace number 1; workspace number 1
+bindsym --to-code $mod+Shift+2 move container to workspace number 2; workspace number 2
+bindsym --to-code $mod+Shift+3 move container to workspace number 3; workspace number 3
+bindsym --to-code $mod+Shift+4 move container to workspace number 4; workspace number 4
+bindsym --to-code $mod+Shift+5 move container to workspace number 5; workspace number 5
+bindsym --to-code $mod+Shift+6 move container to workspace number 6; workspace number 6
+bindsym --to-code $mod+Shift+7 move container to workspace number 7; workspace number 7
+bindsym --to-code $mod+Shift+8 move container to workspace number 8; workspace number 8
+bindsym --to-code $mod+Shift+9 move container to workspace number 9; workspace number 9
+bindsym --to-code $mod+Shift+0 move container to workspace number 10; workspace number 10
+
+#
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym --to-code $mod+b splith
+    bindsym --to-code $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym --to-code $mod+s layout stacking
+    bindsym --to-code $mod+w layout tabbed
+    bindsym --to-code $mod+e layout toggle split
+
+    # Make the current focus fullscreen
+    bindsym --to-code $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym --to-code $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym --to-code $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym --to-code $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym --to-code $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym --to-code $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym --to-code $left resize shrink width 10px
+    bindsym --to-code $down resize grow height 10px
+    bindsym --to-code $up resize shrink height 10px
+    bindsym --to-code $right resize grow width 10px
+
+    # Ditto, with arrow keys
+    bindsym --to-code Left resize shrink width 10px
+    bindsym --to-code Down resize grow height 10px
+    bindsym --to-code Up resize shrink height 10px
+    bindsym --to-code Right resize grow width 10px
+
+    # Return to default mode
+    bindsym --to-code Return mode "default"
+    bindsym --to-code Escape mode "default"
+}
+bindsym --to-code $mod+r mode "resize"
+#
+# Utilities:
+#
+    # Special keys to adjust volume via PulseAudio
+    bindsym --to-code --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+    bindsym --to-code --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+    bindsym --to-code --locked XF86AudioRaiseVolume exec pactl set-sink-volume \@DEFAULT_SINK@ +5%
+    bindsym --to-code --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    # Special keys to adjust brightness via brightnessctl
+    bindsym --to-code --locked XF86MonBrightnessDown exec brightnessctl set 5%-
+    bindsym --to-code --locked XF86MonBrightnessUp exec brightnessctl set 5%+
+    # Special key to take a screenshot with grim
+    bindsym --to-code Print exec grim
+
+bar {
+    swaybar_command waybar
+}
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+# bar {
+#     position top
+# 
+#     # When the status_command prints a new line to stdout, swaybar updates.
+#     # The default just shows the current date and time.
+#     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+# 
+#     colors {
+#         statusline #ffffff
+#         background #323232
+#         inactive_workspace #32323200 #32323200 #5c5c5c
+#     }
+# }
+
+include /etc/sway/config.d/*
