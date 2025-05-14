@@ -7,7 +7,7 @@ update_cache() {
     local search_paths=(
         "/usr/share/applications/"
         "$HOME/.local/share/applications/"
-        "/var/lib/flatpak/exports/share/applications/"
+        #"/var/lib/flatpak/exports/share/applications/"
     )
     find -L "${search_paths[@]}" -type f -name "*.desktop" 2>/dev/null | \
     while read -r file; do

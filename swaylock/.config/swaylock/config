@@ -1,6 +1,7 @@
 image=/usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png
 scaling=fill
 font=Roboto
-indicator-radius=100
+font-size=26
+indicator-radius=60
 indicator-thickness=10
-
+indicator-idle-visible
