@@ -1,4 +1,4 @@
-image=/usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png
+image=~/.local/share/backgrounds/blue.jpg
 scaling=fill
 font=Roboto
 font-size=26

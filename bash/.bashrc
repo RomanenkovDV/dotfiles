@@ -11,3 +11,6 @@ PS1='[\u@\h \W]\$ '
 
 eval "$(fzf --bash)"
 export PATH="$HOME/.local/bin:$PATH"
+
+EDITOR=nvim
+OPENER=xdg-open

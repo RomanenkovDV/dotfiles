@@ -20,8 +20,8 @@ client.urgent           #BF616A #ede6e3 #ffffff #BF616A #BF616A
 client.placeholder      #dad3d0 #ede6e3 #938680 #dad3d0 #dad3d0
 
 ### Output configuration (swaymsg -t get_outputs)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 output eDP-1 scale 1.5
+output * bg ~/.local/share/backgrounds/blue.jpg fill
 
 
 ### Input configuration (swaymsg -t get_inputs)
@@ -42,7 +42,6 @@ exec swayidle -w \
     timeout 310 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
     before-sleep 'swaylock -f'
 
-
 ### Key bindings
 
     # Applications
@@ -59,9 +58,10 @@ exec swayidle -w \
     for_window [app_id="^kitty-launcher$"] floating enable, sticky enable, move position center
     for_window [app_id="thunar"] floating enable, sticky enable, move position center
     for_window [app_id="pavucontrol"] floating enable, sticky enable, move position center
-    for_window [app_id="nwg-dock"] floating enable, move position center bottom, sticky enable
+    for_window [app_id="keepassxc"] floating enable, sticky enable, resize set 1000 600, move position center
 
     exec mako
+    exec sleep 2 && dex --autostart --environment sway
 
 # @todo format
 floating_modifier $mod normal
