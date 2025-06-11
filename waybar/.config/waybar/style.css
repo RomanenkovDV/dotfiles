@@ -1,0 +1,93 @@
+* {
+    font-family: "Roboto Mono Nerd Font";
+    font-size: 12pt;
+}
+
+#waybar {
+    color: #c0caf5;
+    background: rgba(26, 27, 38, 0.2);
+}
+
+.modules-left,
+.modules-center,
+.modules-right
+{
+    margin: 2px;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#power-profiles-daemon,
+#language,
+#mpd {
+    padding: 0 5px;
+    border-radius: 5px;
+    background: rgba(0, 0, 8, 0.6);
+}
+
+#window {
+    padding-left: 10px;
+}
+
+#clock:hover,
+#battery:hover,
+#cpu:hover,
+#memory:hover,
+#disk:hover,
+#temperature:hover,
+#backlight:hover,
+#network:hover,
+#pulseaudio:hover,
+#wireplumber:hover,
+#custom-media:hover,
+#mode:hover,
+#idle_inhibitor:hover,
+#scratchpad:hover,
+#power-profiles-daemon:hover,
+#language:hover,
+#mpd:hover {
+    color: #ebcb8b;
+    background: rgba(26, 27, 38, 1.0);
+}
+
+#workspaces button {
+    padding: 0px 10px;
+    font-weight: 900;
+    color: #c0caf5;
+    border:none;
+    border-radius: 5px;
+}
+
+#workspaces button:hover {
+    background: #11111b;
+    box-shadow: none;
+    color: #ebcb8b;
+}
+
+#workspaces button.focused {
+    color: #ebcb8b; 
+}
+
+#custom-arch {
+    padding: 0 20px 0px 10px;
+    font-size: 25px;
+}
+
+#custom-arch:hover {
+    color: #1793d1;
+    background: #11111b;
+    border-radius: 5px;
+}

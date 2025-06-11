@@ -10,8 +10,8 @@ set $term kitty
 set $menu wmenu-run
 
 ###
-smart_gaps on
 gaps inner 2
+smart_gaps on
 default_border pixel 2
 client.focused          #D08770 #ede6e3 #ffffff #EBCB8B #D08770
 client.unfocused        #637A8A #ede6e3 #685c56 #637A8A #637A8A
@@ -20,9 +20,40 @@ client.urgent           #BF616A #ede6e3 #ffffff #BF616A #BF616A
 client.placeholder      #dad3d0 #ede6e3 #938680 #dad3d0 #dad3d0
 
 ### Output configuration (swaymsg -t get_outputs)
-output eDP-1 scale 1.5
-output * bg ~/.local/share/backgrounds/blue.jpg fill
+set $screen-1 eDP-1
+set $screen-2 HDMI-A-1
+set $screen-3 DP-2
 
+output $screen-1 {
+    scale 1.5
+    position 2300,1080
+    bg ~/.local/share/backgrounds/blue.jpg fill
+}
+
+output $screen-2 {
+    scale 1.0
+    position 1920,0
+    bg ~/.local/share/backgrounds/blue.jpg fill
+}
+
+output $screen-3 {
+    scale 1.0
+    position 0,0
+    bg ~/.local/share/backgrounds/blue.jpg fill
+}
+
+workspace 1 output $screen-2
+workspace 2 output $screen-2
+workspace 3 output $screen-2
+workspace 4 output $screen-2
+workspace 5 output $screen-2
+workspace 6 output $screen-3
+workspace 7 output $screen-3
+workspace 8 output $screen-3
+workspace 9 output $screen-1
+
+assign [app_id="firefox"] workspace 4
+for_window [app_id="firefox"] focus
 
 ### Input configuration (swaymsg -t get_inputs)
 input * {
@@ -32,14 +63,10 @@ input * {
 
 
 ### Idle configuration
-# exec swayidle -w \
-#     timeout 300 'swaylock -f -c 000000' \
-#     timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-#     before-sleep 'swaylock -f -c 000000'
-
 exec swayidle -w \
     timeout 300 'swaylock -f' \
-    timeout 310 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+    timeout 360 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+    timeout 600 'if [ "$(cat /sys/class/power_supply/ADP0/online)" = "0" ]; then systemctl hibernate; fi' \
     before-sleep 'swaylock -f'
 
 ### Key bindings
@@ -55,10 +82,20 @@ exec swayidle -w \
         -o hide_decorations=yes \
         -e ~/.local/bin/app-launcher.sh
 
+    bindsym --to-code Print exec grim -t ppm - | satty \
+        --fullscreen \
+        --profile-startup \
+        --copy-command "wl-copy" \
+        --early-exit \
+        --filename - \
+        --initial-tool crop \
+        --output-filename "${XDG_SCREENSHOTS_DIR}/satty-%Y_%m_%d-%H:%M:%S.png"
+
     for_window [app_id="^kitty-launcher$"] floating enable, sticky enable, move position center
     for_window [app_id="thunar"] floating enable, sticky enable, move position center
     for_window [app_id="pavucontrol"] floating enable, sticky enable, move position center
-    for_window [app_id="keepassxc"] floating enable, sticky enable, resize set 1000 600, move position center
+    for_window [app_id="keepassxc"] floating enable, sticky enable, move position center
+    for_window [app_id="satty"] floating enable, fullscreen
 
     exec mako
     exec sleep 2 && dex --autostart --environment sway
@@ -181,29 +218,9 @@ bindsym --to-code $mod+r mode "resize"
     # Special keys to adjust brightness via brightnessctl
     bindsym --to-code --locked XF86MonBrightnessDown exec brightnessctl set 5%-
     bindsym --to-code --locked XF86MonBrightnessUp exec brightnessctl set 5%+
-    # Special key to take a screenshot with grim
-    bindsym --to-code Print exec grim
 
 bar {
     swaybar_command waybar
 }
-
-#
-# Status Bar:
-#
-# Read `man 5 sway-bar` for more information about this section.
-# bar {
-#     position top
-# 
-#     # When the status_command prints a new line to stdout, swaybar updates.
-#     # The default just shows the current date and time.
-#     status_command while date +'%Y-%m-%d %X'; do sleep 1; done
-# 
-#     colors {
-#         statusline #ffffff
-#         background #323232
-#         inactive_workspace #32323200 #32323200 #5c5c5c
-#     }
-# }
 
 include /etc/sway/config.d/*
