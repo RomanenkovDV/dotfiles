@@ -1,110 +1,59 @@
-### Constants
-set $mod Mod4
+include idle.conf
+include input.conf
+include output.conf
+include style.conf
 
+### Constants
+
+set $mod Mod4
 set $left h
 set $down j
 set $up k
 set $right l
 
-set $term kitty
-set $menu wmenu-run
+set $term foot
+set $menu rofi -show drun -show-icons
 
-###
-gaps inner 2
-smart_gaps on
-default_border pixel 2
-client.focused          #D08770 #ede6e3 #ffffff #EBCB8B #D08770
-client.unfocused        #637A8A #ede6e3 #685c56 #637A8A #637A8A
-client.focused_inactive #AA8F7C #ede6e3 #685c56 #AA8F7C #AA8F7C
-client.urgent           #BF616A #ede6e3 #ffffff #BF616A #BF616A
-client.placeholder      #dad3d0 #ede6e3 #938680 #dad3d0 #dad3d0
+### Key bindings
 
-### Output configuration (swaymsg -t get_outputs)
-set $screen-1 eDP-1
-set $screen-2 DP-2
-set $screen-3 HDMI-A-1
-
-output $screen-1 {
-    scale 1.5
-    position 0,1080
-    bg ~/.local/share/backgrounds/blue.jpg fill
-}
-
-output $screen-2 {
-    scale 1.0
-    position 1920,0
-    bg ~/.local/share/backgrounds/blue.jpg fill
-}
-
-output $screen-3 {
-    scale 1.0
-    position 0,0
-    bg ~/.local/share/backgrounds/blue.jpg fill
-}
-
-workspace 1 output $screen-2
-workspace 2 output $screen-2
-workspace 3 output $screen-2
-workspace 4 output $screen-2
-workspace 5 output $screen-2
-workspace 6 output $screen-3
-workspace 7 output $screen-3
-workspace 8 output $screen-3
-workspace 9 output $screen-1
+bindsym --to-code $mod+Shift+q kill
+bindsym --to-code $mod+Return exec $term
+bindsym --to-code $mod+Shift+Return exec $term -a $term-float
+bindsym --to-code $mod+d exec $menu
+bindsym --to-code $mod+n exec $term -a todo nvim $HOME/.tmp/todo.md
+bindsym --to-code $mod+i exec $term -a settings lf $HOME/.config
+bindsym --to-code Print exec grim -t ppm - | satty \
+    --fullscreen \
+    --profile-startup \
+    --copy-command "wl-copy" \
+    --early-exit \
+    --filename - \
+    --initial-tool crop \
+    --output-filename "${XDG_SCREENSHOTS_DIR}/satty-%Y_%m_%d-%H:%M:%S.png"
 
 assign [app_id="firefox"] workspace 4
 for_window [app_id="firefox"] focus
 
-### Input configuration (swaymsg -t get_inputs)
-input * {
-    xkb_layout "us,ru"
-    xkb_options "grp:alt_shift_toggle"
-}
-
-
-### Idle configuration
-exec swayidle -w \
-    timeout 300 'swaylock -f' \
-    timeout 360 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-    timeout 600 'if [ "$(cat /sys/class/power_supply/ADP0/online)" = "0" ]; then systemctl hibernate; fi' \
-    before-sleep 'swaylock -f'
-
-### Key bindings
-
-    # Applications
-    bindsym --to-code $mod+Shift+q kill
-    bindsym --to-code $mod+Return exec $term
-    bindsym --to-code $mod+d exec kitty --class=kitty-launcher \
-        -o confirm_os_window_close=0 \
-        -o initial_window_width=1000 \
-        -o initial_window_height=600 \
-        -o remember_window_size=no \
-        -o hide_decorations=yes \
-        -e ~/.local/bin/app-launcher.sh
-
-    bindsym --to-code Print exec grim -t ppm - | satty \
-        --fullscreen \
-        --profile-startup \
-        --copy-command "wl-copy" \
-        --early-exit \
-        --filename - \
-        --initial-tool crop \
-        --output-filename "${XDG_SCREENSHOTS_DIR}/satty-%Y_%m_%d-%H:%M:%S.png"
-
-    for_window [app_id="^kitty-launcher$"] floating enable, sticky enable, move position center
-    for_window [app_id="thunar"] floating enable, sticky enable, move position center
-    for_window [app_id="pavucontrol"] floating enable, sticky enable, move position center
-    for_window [app_id="keepassxc"] floating enable, sticky enable, move position center
-    for_window [app_id="satty"] floating enable, fullscreen
-
-    exec mako
-    exec sleep 2 && dex --autostart --environment sway
+# Applications
+for_window [app_id="thunar"] floating enable, move position center
+for_window [app_id="pavucontrol"] floating enable, move position center
+for_window [app_id="keepassxc"] floating enable, move position center
+for_window [app_id="mpv"] floating enable, move position center
+for_window [app_id="satty"] floating enable, fullscreen
+for_window [app_id="todo"] floating enable, move position center, resize set 60 ppt 60 ppt
+for_window [app_id="settings"] floating enable, move position center, resize set 60 ppt 60 ppt
+for_window [app_id="$term-float"] floating enable, move position center, resize set 60 ppt 60 ppt
+for_window [app_id="telegram"] resize set width 34 ppt
 
 # @todo format
 floating_modifier $mod normal
 
 bindsym --to-code $mod+Shift+c reload
-bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'Exit menu' \
+    -B 'End session' 'swaymsg exit' \
+    -B 'Hybernate' 'systemctl hibernate' \
+    -B 'Poweroff' 'poweroff' \
+    -B 'Reboot' 'reboot'
 
 bindsym --to-code $mod+$left focus left
 bindsym --to-code $mod+$down focus down
@@ -223,4 +172,5 @@ bar {
     swaybar_command waybar
 }
 
+include exec.conf
 include /etc/sway/config.d/*
