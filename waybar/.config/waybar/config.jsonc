@@ -68,10 +68,10 @@
     },
 
     "temperature": {
-        "critical-threshold": 80,
+        "critical-threshold": 75,
         "format": "{temperatureC}°C {icon}",
         "format-icons": [""],
-        "on-click": "missioncenter"
+        "on-click": "foot -a sensors watch -n 0.5 sensors"
     },
 
     "cpu": {
@@ -88,7 +88,7 @@
         "interval": 30,
         "format": "{specific_free:.0f} GB",
         "unit": "GB",
-        "on-click": "missioncenter"
+        "on-click": "foot -a gdu gdu -aMC /"
     },
 
     "battery": {

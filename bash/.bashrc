@@ -9,11 +9,10 @@ alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
-eval "$(fzf --bash)"
-export PATH="$HOME/.local/bin:$PATH"
-
 export EDITOR=nvim
 export OPENER=xdg-open
+
+export PATH="$HOME/.local/bin:$PATH"
 
 function proxy_on() {
     export ALL_PROXY="http://127.0.0.1:8118"

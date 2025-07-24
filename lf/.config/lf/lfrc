@@ -1,7 +1,9 @@
 # interpreter for shell commands
-set shell sh
+set shell /bin/sh
 set shellopts '-eu'
 set ifs "\n"
+
+set icons true
 
 # Use the `dim` attribute instead of underline for the cursor in the preview pane
 set cursorpreviewfmt "\033[7;2m"
@@ -54,9 +56,17 @@ map <c-f> :fzf_search
 # cmd open $nvim $f
 # map O $open-with.sh $f
  
-cmd open &{{
+# old, deleteme
+# cmd open &{{
+#     case $(file --mime-type -Lb $f) in
+#         text/*) lf -remote "send $id \$$EDITOR \$fx";;
+#         *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;;
+#     esac
+# }}
+
+cmd open ${{
     case $(file --mime-type -Lb $f) in
-        text/*) lf -remote "send $id \$$EDITOR \$fx";;
+        text/*) $EDITOR $fx;;
         *) for f in $fx; do $OPENER $f > /dev/null 2> /dev/null & done;;
     esac
 }}
