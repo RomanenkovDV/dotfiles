@@ -13,6 +13,7 @@ export EDITOR=nvim
 export OPENER=xdg-open
 
 export PATH="$HOME/.local/bin:$PATH"
+export SSH_AUTH_SOCK="/run/user/1000/ssh-agent.socket"
 
 function proxy_on() {
     export ALL_PROXY="http://127.0.0.1:8118"
