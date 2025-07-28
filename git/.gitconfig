@@ -4,6 +4,4 @@
 
 [alias]
 	hist = log --graph --all --oneline
-
-[includeIf "gitdir:~/wk/sitronics-kt/"]
-    path = ~/wk/sitronics-kt/.gitconfig
+    push-all = !git push github main && git push gitlab main
