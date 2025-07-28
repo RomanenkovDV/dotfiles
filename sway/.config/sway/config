@@ -3,6 +3,8 @@ include input.conf
 include output.conf
 include style.conf
 
+xwayland disabled
+
 ### Constants
 
 set $mod Mod4
@@ -34,19 +36,20 @@ bindsym --to-code Print exec grim -t ppm - | satty \
 assign [app_id="firefox"] workspace 4
 for_window [app_id="firefox"] focus
 
-# Applications
-for_window [app_id="thunar"] floating enable, move position center, resize set 60 ppt 60 ppt
+# Applications swaymsg -t get_tree
+for_window [app_id="Thunar"] floating enable, move position center, resize set 60ppt 60ppt
 for_window [app_id="pavucontrol"] floating enable, move position center
 for_window [app_id="keepassxc"] floating enable, move position center
 for_window [app_id="mpv"] floating enable, move position center
 for_window [app_id="satty"] floating enable, fullscreen
-for_window [app_id="missioncenter"] floating enable, move position center, resize set 80 ppt 80 ppt
-for_window [app_id="todo"] floating enable, move position center, resize set 60 ppt 60 ppt
-for_window [app_id="settings"] floating enable, move position center, resize set 60 ppt 60 ppt
-for_window [app_id="$term-float"] floating enable, move position center, resize set 60 ppt 60 ppt
-for_window [app_id="gdu"] floating enable, move position center, resize set 60 ppt 60 ppt
-for_window [app_id="sensors"] floating enable, move position center, resize set 60 ppt 80 ppt
-for_window [app_id="telegram"] resize set width 34 ppt
+for_window [app_id="missioncenter"] floating enable, move position center, resize set 80ppt 80ppt
+for_window [app_id="todo"] floating enable, move position center, resize set 60ppt 60ppt
+for_window [app_id="settings"] floating enable, move position center, resize set 60ppt 60ppt
+for_window [app_id="$term-float"] floating enable, move position center, resize set 60ppt 60ppt
+for_window [app_id="gdu"] floating enable, move position center, resize set 60ppt 60ppt
+for_window [app_id="sensors"] floating enable, move position center, resize set 60ppt 80ppt
+for_window [app_id="telegram"] resize set width 34ppt
+for_window [app_id="nvim-float"] floating enable, move position center, resize set 60ppt 60ppt
 
 # @todo format
 floating_modifier $mod normal

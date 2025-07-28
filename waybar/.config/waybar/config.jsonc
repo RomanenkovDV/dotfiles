@@ -86,8 +86,8 @@
 
     "disk": {
         "interval": 30,
-        "format": "{specific_free:.0f} GB",
-        "unit": "GB",
+        "format": "{specific_free:.0f} GiB",
+        "unit": "GiB",
         "on-click": "foot -a gdu gdu -aMC /"
     },
 
